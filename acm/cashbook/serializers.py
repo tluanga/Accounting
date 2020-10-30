@@ -14,6 +14,7 @@ class LedgerSerializer(serializers.ModelSerializer):
         model = Ledger
         fields = [
             'ledger_name',
+            'credit_or_debit',
             'particulars',
             'amount',
             'active',

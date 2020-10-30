@@ -43,6 +43,7 @@ class Ledger(models.Model):
     def save(self, *args, **kwargs):
         super(Ledger, self).save(*args, **kwargs)
 
+
 class CashBook(models.Model):
     sl_no = models.AutoField(primary_key=True)
     credit_or_debit = models.CharField(max_length=20, choices=CHOICES, default='debit')

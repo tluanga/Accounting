@@ -26,5 +26,6 @@ router.register('cashbook', CashBookViewSet)
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('', include(router.urls))
+    path('', include(router.urls), name='home'),
+    path('auth/', include('acm.account.urls'))
 ]
