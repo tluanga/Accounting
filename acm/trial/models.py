@@ -10,7 +10,7 @@ CHOICES = (
 # )
 
 class TrialBalance(models.Model):
-    particulars = models.CharField(max_length=255)
+    particulars = models.CharField(max_length=50)
     credit_or_debit = models.CharField(max_length=20, choices=CHOICES, default='debit')
     amount = models.DecimalField(default=0, max_digits=12, decimal_places=2)
     active = models.BooleanField(default=True)

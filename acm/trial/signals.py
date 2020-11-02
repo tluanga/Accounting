@@ -7,10 +7,15 @@ from .models import TrialBalance
 @receiver(post_save, sender=DayBook)
 def post_save_create_trial_balance(sender, instance, created, **kwargs):
     if created:
-        z = f'{instance.particulars} a/c'
+        credit_or_debit = ''
+        if instance.credit_or_debit == 'credit':
+            credit_or_debit = 'debit'
+        elif instance.credit_or_debit == 'debit':
+            credit_or_debit = 'credit'
+
         c = TrialBalance.objects.create(
-            particulars=z,
-            credit_or_debit=instance.credit_or_debit,
+            particulars=f'{instance.ledger_name} a/c',
+            credit_or_debit=credit_or_debit,
             amount=instance.amount,
         )
         c.save()

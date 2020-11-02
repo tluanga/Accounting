@@ -1,26 +1,18 @@
 from rest_framework import serializers
-from .models import DayBook, LedgerMaster, Ledger, CashBook
+from .models import DayBook, Ledger, CashBook
 
-class LedgerMasterSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = LedgerMaster
-        fields = [
-            'name'
-        ]
+# class LedgerMasterSerializer(serializers.ModelSerializer):
+#     class Meta:
+#         model = LedgerMaster
+#         fields = [
+#             'name'
+#         ]
 
 
 class LedgerSerializer(serializers.ModelSerializer):
     class Meta:
         model = Ledger
-        fields = [
-            'ledger_name',
-            'credit_or_debit',
-            'particulars',
-            'amount',
-            'active',
-            'created_at',
-            'updated_at',
-        ]
+        fields = '__all__'
 
 
 class DayBookSerializer(serializers.ModelSerializer):
