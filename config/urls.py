@@ -17,12 +17,15 @@ from django.contrib import admin
 from django.urls import path, include
 from rest_framework.routers import DefaultRouter
 from acm.cashbook.views import DayBookViewSet, LedgerViewSet, LedgerMasterViewSet, CashBookViewSet
+from acm.trial.views import TrialBalanceViewSet
 
 router = DefaultRouter()
 router.register('master', LedgerMasterViewSet)
 router.register('daybook', DayBookViewSet)
 router.register('ledger', LedgerViewSet)
 router.register('cashbook', CashBookViewSet)
+router.register('trialbalance', TrialBalanceViewSet)
+
 
 urlpatterns = [
     path('admin/', admin.site.urls),
