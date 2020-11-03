@@ -1,4 +1,7 @@
 from django.db import models
+from django.db.models import Sum
+import time, datetime
+
 
 CHOICES = ( 
     ("credit", "credit"), 
@@ -10,17 +13,16 @@ CHOICES1 = (
 )
 
 
-# class LedgerMaster(models.Model):
-#     name = models.CharField(max_length=50, null=True, blank=True)
-#     remarks = models.TextField()
+class LedgerMaster(models.Model):
+     name = models.CharField(max_length=50, null=True, blank=True)
+     remarks = models.TextField()
 
-#     def __str__(self):
-#         return self.name
+     def __str__(self):
+         return self.name
 
 
 class DayBook(models.Model):
-    sl_no = models.AutoField(primary_key=True)
-    ledger_name = models.CharField(max_length=50, unique = True)
+    ledger_master = models.ForeignKey(LedgerMaster, on_delete=models.DO_NOTHING)
     credit_or_debit = models.CharField(max_length=20, choices=CHOICES, default='debit')
     bank_or_cash = models.CharField(max_length=20, choices=CHOICES1, default='cash')
     particulars = models.CharField(max_length=255, default=False)
@@ -30,12 +32,9 @@ class DayBook(models.Model):
     updated_at = models.DateTimeField(auto_now=True)
     remarks = models.TextField(blank=True)
 
-    def __str__(self):
-        return self.ledger_name
-
 
 class Ledger(models.Model):
-    name = models.CharField(max_length=50)
+    ledger_master = models.ForeignKey(LedgerMaster, on_delete=models.CASCADE)
     credit_or_debit = models.CharField(max_length=20, choices=CHOICES, default='debit')
     particulars = models.CharField(max_length=255)
     amount = models.DecimalField(default=0, max_digits=12, decimal_places=2)
@@ -43,9 +42,19 @@ class Ledger(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
+    @staticmethod
+    def update_trial_balance(ledger_master, start_date, end_date):
+        data = Ledger.objects.filter(
+            ledger_master=ledger_master,
+            created_at=start_date,
+            updated_at=end_date
+        ).aggregate(Sum('amount'))
+        return data
+
+
 
 class CashBook(models.Model):
-    sl_no = models.AutoField(primary_key=True)
+    day_book = models.ForeignKey(DayBook, on_delete=models.CASCADE)
     particulars = models.CharField(max_length=255, default=False)
     credit_or_debit = models.CharField(max_length=20, choices=CHOICES, default='debit')
     bank_or_cash = models.CharField(max_length=20, choices=CHOICES1, default='cash')
@@ -53,13 +62,4 @@ class CashBook(models.Model):
     active = models.BooleanField(default=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
-
-
-
-
-
-
-
-
-
 
