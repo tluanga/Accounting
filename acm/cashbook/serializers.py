@@ -1,12 +1,12 @@
 from rest_framework import serializers
-from .models import DayBook, Ledger, CashBook
+from .models import DayBook, Ledger, CashBook, LedgerMaster
 
-# class LedgerMasterSerializer(serializers.ModelSerializer):
-#     class Meta:
-#         model = LedgerMaster
-#         fields = [
-#             'name'
-#         ]
+class LedgerMasterSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = LedgerMaster
+        fields = [
+            'name'
+        ]
 
 
 class LedgerSerializer(serializers.ModelSerializer):

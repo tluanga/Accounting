@@ -4,6 +4,30 @@ from .models import DayBook, Ledger, CashBook
 
 
 @receiver(post_save, sender=DayBook)
+def post_save_create_cashbook(sender, instance, created, **kwargs):
+    if created:
+        if instance.credit_or_debit == 'debit':
+            b = CashBook.objects.create(
+            day_book=instance,
+            particulars=f'To {instance.ledger_master} a/c',
+            credit_or_debit=instance.credit_or_debit,
+            bank_or_cash=instance.bank_or_cash,
+            amount=instance.amount
+            )
+            b.save()
+        elif instance.credit_or_debit == 'credit':
+            b = CashBook.objects.create(
+                day_book=instance,
+                credit_or_debit=instance.credit_or_debit,
+                particulars=f'By {instance.ledger_master} a/c',
+                amount=instance.amount,
+                bank_or_cash=instance.bank_or_cash
+            )
+            b.save()
+            return b
+
+
+@receiver(post_save, sender=DayBook)
 
 def post_save_create_ledger(sender, instance, created, **kwargs):  
     if created:
@@ -21,30 +45,14 @@ def post_save_create_ledger(sender, instance, created, **kwargs):
 
             
         a = Ledger.objects.create(
-            name=f'{instance.ledger_name} a/c',
+            ledger_master=f'{instance.ledger_master} a/c',
             credit_or_debit=credit_or_debit,
             particulars=z,
             amount=instance.amount,
         )
         a.save()
 
-@receiver(post_save, sender=DayBook)
-def post_save_create_cashbook(sender, instance, created, **kwargs):
-    if created:
-        if instance.credit_or_debit == 'debit':
-            b = CashBook.objects.create(
-            particulars=f'To {instance.ledger_name} a/c',
-            amount=instance.amount,
-            bank_or_cash=instance.bank_or_cash
-            )
-            b.save()
-        elif instance.credit_or_debit == 'credit':
-            b = CashBook.objects.create(
-                credit_or_debit=instance.credit_or_debit,
-                particulars=f'By {instance.ledger_name} a/c',
-                amount=instance.amount,
-                bank_or_cash=instance.bank_or_cash
-            )
-            b.save()
+
+
 
 

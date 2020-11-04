@@ -1,6 +1,7 @@
 from django.db import models
 from django.db.models import Sum
 import time, datetime
+from acm.trial.models import TrialBalance
 
 
 CHOICES = ( 
@@ -42,15 +43,41 @@ class Ledger(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
+    # @staticmethod
+    # def update_trial_balance(ledger_master, start_date, end_date):
+    #     data = Ledger.objects.filter(
+    #         ledger_master=ledger_master,
+    #         created_at__gte=start_date,
+    #         created_at__lte=end_date
+    #     ).aggregate(Sum('amount'))
+    #     return data
+    
     @staticmethod
     def update_trial_balance(ledger_master, start_date, end_date):
-        data = Ledger.objects.filter(
+        new_amount = Ledger.objects.filter(
             ledger_master=ledger_master,
-            created_at=start_date,
-            updated_at=end_date
+            created_at__gte=start_date,
+            created_at__lte=end_date
         ).aggregate(Sum('amount'))
-        return data
 
+        ledger_master_object = TrialBalance.objects.filter(id=ledger_master)
+        
+        if ledger_master_object.exists():
+            updated_data = TrialBalance.objects.update(
+                particulars=ledger_master,
+                amount=new_amount                
+            )
+            updated_data.save()
+            return updated_data
+
+        elif TrialBalance.DoesNotExist:
+            updated_data = TrialBalance.objects.create(
+                particulars=ledger_master,
+                credit_or_debit=credit_or_debit,
+                amount=new_amount
+            )
+            updated_data.save()
+            return updated_data
 
 
 class CashBook(models.Model):

@@ -14,7 +14,7 @@ def post_save_create_trial_balance(sender, instance, created, **kwargs):
             credit_or_debit = 'credit'
 
         c = TrialBalance.objects.create(
-            particulars=f'{instance.ledger_name} a/c',
+            particulars=f'{instance.ledger_master} a/c',
             credit_or_debit=credit_or_debit,
             amount=instance.amount,
         )
