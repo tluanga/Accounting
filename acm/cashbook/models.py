@@ -70,7 +70,7 @@ class Ledger(models.Model):
             updated_data.save()
             return updated_data
 
-        elif TrialBalance.DoesNotExist:
+        elif ledger_master_object.DoesNotExist:
             updated_data = TrialBalance.objects.create(
                 particulars=ledger_master,
                 credit_or_debit=credit_or_debit,
