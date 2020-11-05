@@ -1,12 +1,12 @@
 from django.shortcuts import render
 
 from rest_framework import viewsets
-from .models import DayBook, Ledger, CashBook
-from .serializers import DayBookSerializer, LedgerSerializer, CashBookSerializer
+from .models import DayBook, Ledger, CashBook, LedgerMaster
+from .serializers import DayBookSerializer, LedgerSerializer, CashBookSerializer, LedgerMasterSerializer
 
-# class LedgerMasterViewSet(viewsets.ModelViewSet):
-#     queryset = LedgerMaster.objects.all()
-#     serializer_class = LedgerMasterSerializer
+class LedgerMasterViewSet(viewsets.ModelViewSet):
+    queryset = LedgerMaster.objects.all()
+    serializer_class = LedgerMasterSerializer
 
 class DayBookViewSet(viewsets.ModelViewSet):
     queryset = DayBook.objects.all()
