@@ -45,7 +45,7 @@ def post_save_create_ledger(sender, instance, created, **kwargs):
 
             
         a = Ledger.objects.create(
-            ledger_master=f'{instance.ledger_master} a/c',
+            ledger_master=instance.ledger_master,
             credit_or_debit=credit_or_debit,
             particulars=z,
             amount=instance.amount,

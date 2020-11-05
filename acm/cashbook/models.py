@@ -12,6 +12,11 @@ CHOICES1 = (
     ("cash", "cash"), 
     ("bank", "bank"),
 )
+CHOICES2 = ( 
+    ("trading", "trading"), 
+    ("profit_and_loss", "profit_and_loss"),
+    ("BalanceSheet", "BalanceSheet")
+)
 
 
 class LedgerMaster(models.Model):
@@ -28,6 +33,7 @@ class DayBook(models.Model):
     bank_or_cash = models.CharField(max_length=20, choices=CHOICES1, default='cash')
     particulars = models.CharField(max_length=255, default=False)
     amount = models.DecimalField(default=0, decimal_places=2, max_digits=12)
+    select_account = models.CharField(max_length=50, choices=CHOICES2, default=None)
     active = models.BooleanField(default=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)

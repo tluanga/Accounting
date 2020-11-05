@@ -18,6 +18,7 @@ from django.urls import path, include
 from rest_framework.routers import DefaultRouter
 from acm.cashbook.views import DayBookViewSet, LedgerViewSet, CashBookViewSet, LedgerMasterViewSet
 from acm.trial.views import TrialBalanceViewSet
+from acm.finalacc.views import TradingAccountViewSet
 
 router = DefaultRouter()
 router.register('master', LedgerMasterViewSet)
@@ -25,6 +26,7 @@ router.register('daybook', DayBookViewSet)
 router.register('ledger', LedgerViewSet)
 router.register('cashbook', CashBookViewSet)
 router.register('trialbalance', TrialBalanceViewSet)
+router.register('tradingaccount', TradingAccountViewSet)
 
 
 urlpatterns = [

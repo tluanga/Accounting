@@ -42,6 +42,8 @@ INSTALLED_APPS = [
     'acm.cashbook',
     'acm.account',
     'acm.trial',
+    'acm.finalacc',
+    #########################################
 
     'rest_framework.authtoken',
 ]
